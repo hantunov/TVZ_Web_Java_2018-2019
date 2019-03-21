@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>MoneySaver</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/style.css}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+
+<body>
+	
+	<div class="col-md-3">
+		<h1>MoneySaver</h1>
+		
+		<h5><a th:href="@{/unos}">Unos novog troska</a></h5>
+		
+		<p th:text="'Uspješno ste unijeli trošak ' + ${trosak.naziv} + ' u iznosu ' + ${trosak.iznos} + ' kn.'"><br>
+		<p th:text="'Trošak je unesen pod kategoriju ' + ${trosak.vrsta} + ' na datum ' + ${danas} + '.'"><br>
+	</div>
+
+</body>
+</html>

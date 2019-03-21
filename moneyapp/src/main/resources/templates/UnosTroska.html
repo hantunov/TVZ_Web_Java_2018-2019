@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>MoneySaver</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/style.css}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+	<div class="col-md-3">
+		<h1>MoneySaver</h1>
+	
+		<h5>Unos novog troska</h5>
+	
+		<form method="POST" th:object="${trosak}" th:action="@{/novi}">
+		
+			<input type="text" id="naziv" name="naziv" autofocus="autofocus" />
+		
+			<br />
+			<br />
+			
+			<select th:field="*{vrsta}" required>
+				<option value="">---odaberite vrijednost---</option>
+				<option th:each="vrsta : ${vrsteTroska}"
+						th:value="${vrsta}"
+						th:text="${vrsta}">
+				</option>
+			</select>
+		
+			<br />
+			<br />
+		
+			<input type="number" required th:field="*{iznos}" placeholder="0.00">
+		
+			<br />
+			<br />
+			<buttonclass="btnbtn-primary">
+				<input type="submit" value="Unesi novi trosak" />
+			</button>
+			
+			
+		</form>
+	</div>
+
+</body>
+</html>
