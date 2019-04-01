@@ -13,10 +13,15 @@
 	<div class="col-md-3">
 		<h1>MoneySaver</h1>
 		
-		<h5><a th:href="@{/unos}">Unos novog troska</a></h5>
-		
 		<p th:text="'Uspješno ste unijeli trošak ' + ${trosak.naziv} + ' u iznosu ' + ${trosak.iznos} + ' kn.'"><br>
-		<p th:text="'Trošak je unesen pod kategoriju ' + ${trosak.vrsta} + ' na datum ' + ${danas} + '.'"><br>
+		<p th:text="'Trošak je unesen pod kategoriju ' + ${trosak.vrsta} + ' na datum ' + ${danas} + '.'"><br>		
+		<p th:text="'Trenutno stanje u novcaniku je ' + ${novcanik.izracunTroskova()} + ' kn.'"><br> 
+		<form method="GET" action="/unos" >
+			 <input type="submit" value="Unos novog troska"/>
+		</form>		
+		<form method="GET" action="/reset" >
+			 <input type="submit" value="Ponisti novcanik"/>
+		</form>
 	</div>
 
 </body>

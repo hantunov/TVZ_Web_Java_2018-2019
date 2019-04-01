@@ -3,18 +3,34 @@ package hr.java.web.antunovic.moneyapp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
+@SessionAttributes({"novcanik"})
 public class PageController {
 	
+	@ModelAttribute("novcanik")
+	public Novcanik getNovcanik() {
+		return new Novcanik();
+	}
+	
 	@GetMapping("/")
-	public String showHome() {		
+	public String showHome() {
 		return "Pocetna";
+		
 	}
 	
 	@GetMapping("/unos")
@@ -26,8 +42,10 @@ public class PageController {
 	}
 	
 	@PostMapping("/novi")
-	public String showUnesenTrosakPage(Trosak trosak, Model model) {		
-		
+	public String showPrikazTroska(@Valid @ModelAttribute("trosak") Trosak trosak, @SessionAttribute("novcanik") Novcanik novcanik, Model model, Errors errors) {		
+		if (errors.hasErrors()) {
+			return "UnosTroska";
+		}
 		model.addAttribute("trosak", trosak);
 		
 		LocalDate date = LocalDate.now();
@@ -36,6 +54,19 @@ public class PageController {
 		
 		model.addAttribute("danas", danas);
 		
+		log.info("Obrada troska: " + trosak);
+		
+		novcanik.getListaTroskova().add(trosak);
+		
+		log.info("Obrada novcanika: " + novcanik);
+	    
+		
+		
 		return "PrikazTroska";
 	}
+	
+	@GetMapping("/reset")
+	public String resetWallet(SessionStatus status){
+		status.setComplete();
+	return "redirect:/unos"; }
 }

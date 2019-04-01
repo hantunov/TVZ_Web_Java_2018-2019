@@ -17,23 +17,31 @@
 	
 		<form method="POST" th:object="${trosak}" th:action="@{/novi}">
 		
-			<input type="text" id="naziv" name="naziv" autofocus="autofocus" />
-		
+			<input type="text" id="naziv" name="naziv" placeholder="Unesite naziv troska" autofocus="autofocus" />
+			<span class="validation-error"
+            	th:if="${#fields.hasErrors('naziv')}" 
+            	th:errors="*{naziv}">Naziv troska error</span>
 			<br />
 			<br />
 			
-			<select th:field="*{vrsta}" required>
+			<select th:field="*{vrsta}">
 				<option value="">---odaberite vrijednost---</option>
 				<option th:each="vrsta : ${vrsteTroska}"
 						th:value="${vrsta}"
 						th:text="${vrsta}">
 				</option>
 			</select>
+			<span class="validation-error"
+            	th:if="${#fields.hasErrors('vrsta')}" 
+            	th:errors="*{vrsta}">Vrsta troska error</span>
 		
 			<br />
 			<br />
 		
-			<input type="number" required th:field="*{iznos}" placeholder="0.00">
+			<input type="number" step="0.01" placeholder="0.00" th:field="*{iznos}">
+			<span class="validation-error"
+            	th:if="${#fields.hasErrors('iznos')}" 
+            	th:errors="*{vrsta}">Iznos troska error</span>
 		
 			<br />
 			<br />
