@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 	<title>MoneySaver</title>
@@ -10,14 +12,29 @@
 
 <body>
 
-	<div class="col-md-3">
+	<div class="col-lg-3">
 	
-		<h1>MoneySaver</h1>
+		<div class="clearfix">
+			<img src="slika.png" align=left>
+  			<h1>MoneySaver</h1>
+  		</div>
+		
+		<br />
 		
 		<form method="GET" action="/unos" >
-			 <input type="submit" value="Unos novog troska"/>
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+			<button type="submit" class="btn btn-primary">Unos novog troška</button>
 		</form>
-		<!--h5><a th:href="@{/unos}">Unos novog troska</a></h5 -->
+		
+		<br />
+		
+		<div sec:authorize="isAuthenticated()">
+			<form method="POST" th:action="@{/logout}">
+				<button type="submit" class="btn btn-danger">Logout</button>
+				Ulogirani ste kao <span sec:authentication="name">Korisnik</span>.
+			</form>
+		</div>
+		
 	</div>
 	
 </body>

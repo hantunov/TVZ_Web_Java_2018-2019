@@ -1,4 +1,4 @@
-package hr.java.web.antunovic.moneyapp;
+package hr.java.web.antunovic.moneyapp.entities;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class Novcanik {
 	private int ID;
+	private String ime;
 	private List<Trosak> listaTroskova = new ArrayList<Trosak>();
 	
 	public BigDecimal izracunTroskova() {

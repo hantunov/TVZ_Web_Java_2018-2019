@@ -1,4 +1,4 @@
-package hr.java.web.antunovic.moneyapp;
+package hr.java.web.antunovic.moneyapp.controllers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import hr.java.web.antunovic.moneyapp.entities.Novcanik;
+import hr.java.web.antunovic.moneyapp.entities.Trosak;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,7 +29,7 @@ public class PageController {
 		return new Novcanik();
 	}
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public String showHome() {
 		return "Pocetna";
 		
@@ -43,10 +45,14 @@ public class PageController {
 	
 	@PostMapping("/novi")
 	public String showPrikazTroska(@Valid @ModelAttribute("trosak") Trosak trosak, @SessionAttribute("novcanik") Novcanik novcanik, Model model, Errors errors) {		
+		
 		if (errors.hasErrors()) {
 			return "UnosTroska";
 		}
+		
 		model.addAttribute("trosak", trosak);
+		
+		novcanik.setIme("Moja Gotovina");
 		
 		LocalDate date = LocalDate.now();
 		DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -68,5 +74,5 @@ public class PageController {
 	@GetMapping("/reset")
 	public String resetWallet(SessionStatus status){
 		status.setComplete();
-	return "redirect:/unos"; }
+	return "redirect:"; }
 }

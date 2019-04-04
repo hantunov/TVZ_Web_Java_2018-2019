@@ -1,4 +1,4 @@
-package hr.java.web.antunovic.moneyapp;
+package hr.java.web.antunovic.moneyapp.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

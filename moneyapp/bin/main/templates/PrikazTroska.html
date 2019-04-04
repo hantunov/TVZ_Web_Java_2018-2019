@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 	<title>MoneySaver</title>
@@ -11,17 +13,39 @@
 <body>
 	
 	<div class="col-md-3">
-		<h1>MoneySaver</h1>
+		
+		<div class="clearfix">
+			<img src="slika.png" align=left>
+  			<h1>MoneySaver</h1>
+  		</div>
+  		
+  		<br />
 		
 		<p th:text="'Uspješno ste unijeli trošak ' + ${trosak.naziv} + ' u iznosu ' + ${trosak.iznos} + ' kn.'"><br>
 		<p th:text="'Trošak je unesen pod kategoriju ' + ${trosak.vrsta} + ' na datum ' + ${danas} + '.'"><br>		
-		<p th:text="'Trenutno stanje u novcaniku je ' + ${novcanik.izracunTroskova()} + ' kn.'"><br> 
+		<p th:text="'Trenutno stanje u novčaniku \'' + ${novcanik.ime} + '\' je ' + ${novcanik.izracunTroskova()} + ' kn.'"><br> 
+		
 		<form method="GET" action="/unos" >
-			 <input type="submit" value="Unos novog troska"/>
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+			<button type="submit" class="btn btn-primary">Unesi novi trošak</button>
 		</form>		
+		
+		<div sec:authorize="hasRole('ROLE_ADMIN')" >
 		<form method="GET" action="/reset" >
-			 <input type="submit" value="Ponisti novcanik"/>
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+			<button type="submit" class="btn btn-danger">Resetiraj novčanik</button>
 		</form>
+		</div>
+		
+		<br />
+		
+		<div sec:authorize="isAuthenticated()">
+			<form method="POST" th:action="@{/logout}">				
+				<button type="submit" class="btn btn-danger">Logout</button>
+				Ulogirani ste kao <span sec:authentication="name">Korisnik</span>.
+			</form>
+		</div>
+		
 	</div>
 
 </body>
