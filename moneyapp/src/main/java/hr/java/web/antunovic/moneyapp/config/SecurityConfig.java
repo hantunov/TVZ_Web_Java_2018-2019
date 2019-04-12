@@ -1,32 +1,32 @@
 package hr.java.web.antunovic.moneyapp.config;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	@Autowired
+	DataSource dataSource;
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	
 		auth
-		.inMemoryAuthentication()
-		.withUser("admin")
-		.password(passwordEncoder.encode("adminpass"))
-		.roles("ADMIN", "USER")
-		.and()
-		.withUser("user")
-		.password(passwordEncoder.encode("userpass"))
-		.roles("USER");
-	}
+		.jdbcAuthentication()
+		.dataSource(dataSource)
+		.usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username = ?")
+		.authoritiesByUsernameQuery("SELECT username, authority FROM authorities WHERE username = ?")
+		.passwordEncoder(new BCryptPasswordEncoder(10));
+	}	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

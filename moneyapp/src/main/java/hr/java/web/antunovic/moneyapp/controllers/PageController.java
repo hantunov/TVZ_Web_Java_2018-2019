@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import hr.java.web.antunovic.moneyapp.entities.Novcanik;
 import hr.java.web.antunovic.moneyapp.entities.Trosak;
+import hr.java.web.antunovic.moneyapp.repositories.JdbcNovcanikRepository;
+import hr.java.web.antunovic.moneyapp.repositories.JdbcTrosakRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,13 +27,24 @@ import lombok.extern.slf4j.Slf4j;
 @SessionAttributes({"novcanik"})
 public class PageController {
 	
+	JdbcTrosakRepository jdbcTrosakRepository;
+	JdbcNovcanikRepository jdbcNovcanikRepository;
+	
+	@Autowired
+	public PageController(JdbcTrosakRepository jdbcTrosakRepository, JdbcNovcanikRepository jdbcNovcanikRepository) {
+		this.jdbcTrosakRepository = jdbcTrosakRepository;
+		this.jdbcNovcanikRepository = jdbcNovcanikRepository;
+	}
+	
 	@ModelAttribute("novcanik")
 	public Novcanik getNovcanik() {
-		return new Novcanik();
+		
+		return new Novcanik();		
 	}
 	
 	@GetMapping("")
 	public String showHome() {
+		
 		return "Pocetna";
 		
 	}
@@ -51,7 +65,6 @@ public class PageController {
 		}
 		
 		model.addAttribute("trosak", trosak);
-		
 		novcanik.setIme("Moja Gotovina");
 		
 		LocalDate date = LocalDate.now();
@@ -59,20 +72,19 @@ public class PageController {
 		String danas = date.format(pattern);
 		
 		model.addAttribute("danas", danas);
-		
 		log.info("Obrada troska: " + trosak);
 		
+		jdbcTrosakRepository.save(trosak);
+		
 		novcanik.getListaTroskova().add(trosak);
-		
 		log.info("Obrada novcanika: " + novcanik);
-	    
-		
 		
 		return "PrikazTroska";
 	}
 	
 	@GetMapping("/reset")
-	public String resetWallet(SessionStatus status){
+	public String resetWallet(SessionStatus status, @SessionAttribute("novcanik") Novcanik novcanik){
+		jdbcNovcanikRepository.save(novcanik);
 		status.setComplete();
 	return "redirect:"; }
 }

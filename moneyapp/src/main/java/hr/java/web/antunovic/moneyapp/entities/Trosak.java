@@ -2,6 +2,7 @@ package hr.java.web.antunovic.moneyapp.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import javax.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import javax.validation.constraints.DecimalMin;
 @SuppressWarnings("serial")
 public @Data class Trosak implements Serializable{
 	
+	private Long id;	
 	@NotBlank(message="Naziv na moze biti prazan!")
 	@Size(min=2, max=50)
 	private String naziv;
@@ -20,6 +22,7 @@ public @Data class Trosak implements Serializable{
 	private BigDecimal iznos;
 	@NotNull(message="Vrsta mora biti odabrana!")
 	private Vrsta vrsta;
+	private LocalDateTime datum;
 	
 	public static enum Vrsta {
 		Hrana, Piæe, Najam, Režije, Duæan

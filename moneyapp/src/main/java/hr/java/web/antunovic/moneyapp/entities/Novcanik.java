@@ -1,6 +1,7 @@
 package hr.java.web.antunovic.moneyapp.entities;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,8 @@ import lombok.Data;
 
 @Data
 public class Novcanik {
-	private int ID;
+	private Long id;
+	private LocalDateTime createDate;
 	private String ime;
 	private List<Trosak> listaTroskova = new ArrayList<Trosak>();
 	
