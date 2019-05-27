@@ -4,5 +4,10 @@ import hr.java.web.antunovic.moneyapp.entities.Novcanik;
 
 public interface NovcanikRepository {
 	
+	public Iterable<Novcanik> findAll();
+	
+	public Novcanik findOne(Long id);
+	
 	Novcanik save(Novcanik novcanik);
+	
 }

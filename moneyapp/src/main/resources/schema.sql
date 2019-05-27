@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS novcanici (
 CREATE TABLE IF NOT EXISTS troskovi (
 	id IDENTITY,
 	naziv VARCHAR(100),
-	iznos DECIMAL(6,2),
+	iznos DECIMAL(20,2),
 	vrsta VARCHAR(100),
 	datum DATE,
 	novcanikID INT,

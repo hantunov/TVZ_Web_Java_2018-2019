@@ -40,4 +40,17 @@ public class JdbcTrosakRepository implements TrosakRepository {
 		values.put("datum", trosak.getDatum());
 		return trosakInserter.executeAndReturnKey(values).longValue();
 	}
+
+	@Override
+	public Iterable<Trosak> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Trosak findOne(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

@@ -20,22 +20,33 @@ public class JdbcNovcanikRepository implements NovcanikRepository {
 	@Autowired
 	public JdbcNovcanikRepository(JdbcTemplate jdbc) {
 		this.jdbc = jdbc;
-		this.novcanikInserter = new SimpleJdbcInsert(jdbc)
-		.withTableName("novcanici")
-		.usingGeneratedKeyColumns("id");
-	}	
+		this.novcanikInserter = new SimpleJdbcInsert(jdbc).withTableName("novcanici").usingGeneratedKeyColumns("id");
+	}
+	
+	@Override
+	public Iterable<Novcanik> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Novcanik findOne(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Novcanik save(Novcanik novcanik) {
-		novcanik.setCreateDate(LocalDateTime.now());
+		novcanik.setDatum(LocalDateTime.now());
 		novcanik.setId(saveNovcanikDetails(novcanik));
 		return novcanik;
 	}
 	
-	private long saveNovcanikDetails(Novcanik novcanik) {
+	public long saveNovcanikDetails(Novcanik novcanik) {
 		Map<String, Object> values = new HashMap<>();
-		values.put("naziv", novcanik.getIme());
-		values.put("datum", novcanik.getCreateDate());
+		values.put("naziv", novcanik.getNaziv());
+		values.put("datum", novcanik.getDatum());
 		return novcanikInserter.executeAndReturnKey(values).longValue();
 	}
+	
 }

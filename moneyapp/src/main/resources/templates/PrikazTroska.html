@@ -23,7 +23,7 @@
 		
 		<p th:text="'Uspješno ste unijeli trošak ' + ${trosak.naziv} + ' u iznosu ' + ${trosak.iznos} + ' kn.'"><br>
 		<p th:text="'Trošak je unesen pod kategoriju ' + ${trosak.vrsta} + ' na datum ' + ${danas} + '.'"><br>		
-		<p th:text="'Trenutno stanje u novčaniku \'' + ${novcanik.ime} + '\' je ' + ${novcanik.izracunTroskova()} + ' kn.'"><br> 
+		<p th:text="'Trenutno stanje u novčaniku \'' + ${novcanik.naziv} + '\' je ' + ${novcanik.izracunTroskova()} + ' kn.'"><br> 
 		
 		<form method="GET" action="/unos" >
 			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
