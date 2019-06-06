@@ -48,5 +48,18 @@ public class JdbcNovcanikRepository implements NovcanikRepository {
 		values.put("datum", novcanik.getDatum());
 		return novcanikInserter.executeAndReturnKey(values).longValue();
 	}
+
+	@Override
+	public Novcanik update(Novcanik novcanik) {
+		// TODO Auto-generated method stub
+		return novcanik;	
+		
+	}
+
+	@Override
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

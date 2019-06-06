@@ -40,7 +40,8 @@ public class HibernateNovcanikRepository implements NovcanikRepository {
 		try { 
 			return em
 					.createQuery("SELECT n FROM Novcanik n WHERE n.id = ?1", Novcanik.class)
-					.setParameter(1, id).getSingleResult();
+					.setParameter(1, id)
+					.getSingleResult();
 		} catch (Exception ex){
 			log.error("Novcanik nije pronadjen u bazi!");
             return null;			
@@ -50,5 +51,29 @@ public class HibernateNovcanikRepository implements NovcanikRepository {
 	@Override
 	public Novcanik save(Novcanik novcanik) {
 		return em.merge(novcanik);
+	}
+
+	@Override
+	public Novcanik update(Novcanik novcanik) {
+		try {
+			return em.merge(novcanik);
+		} catch (Exception ex) {
+			log.error("Novcanik nije promijenjen jer nije pronadjen u bazi!");
+			return null;
+		}		
+	}
+
+	@Override
+	public void delete(Long id) {
+		try {
+			Novcanik novcanik = em
+								.createQuery("SELECT n FROM Novcanik n WHERE n.id = ?1", Novcanik.class)
+								.setParameter(1, id)
+								.getSingleResult();
+			em.remove(novcanik);
+		 } catch (Exception ex) {
+			 log.error("Novcanik nije obrisan jer nije pronadjen u bazi!");
+		}
+		
 	}
 }

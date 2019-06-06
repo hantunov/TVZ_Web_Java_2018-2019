@@ -9,4 +9,8 @@ public interface TrosakRepository {
     Trosak findOne(Long id);
 	
 	Trosak save(Trosak trosak);
+	
+	Trosak update(Trosak trosak);
+	
+	void delete(Long id);
 }

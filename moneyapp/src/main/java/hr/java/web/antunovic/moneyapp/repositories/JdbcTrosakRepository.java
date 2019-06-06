@@ -52,5 +52,17 @@ public class JdbcTrosakRepository implements TrosakRepository {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Trosak update(Trosak trosak) {
+		// TODO Auto-generated method stub
+		return trosak;		
+	}
+
+	@Override
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

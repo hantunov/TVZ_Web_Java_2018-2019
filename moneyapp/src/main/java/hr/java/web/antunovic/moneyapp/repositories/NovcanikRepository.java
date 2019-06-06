@@ -10,4 +10,8 @@ public interface NovcanikRepository {
 	
 	Novcanik save(Novcanik novcanik);
 	
+	Novcanik update(Novcanik novcanik);
+	
+	void delete(Long id);
+	
 }

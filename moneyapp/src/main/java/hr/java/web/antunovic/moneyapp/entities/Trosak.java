@@ -16,6 +16,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -46,6 +48,7 @@ public class Trosak implements Serializable{
 	
 	@ManyToOne
     @JoinColumn(name = "NOVCANIKID")
+	@JsonBackReference
 	private Novcanik novcanik;
 	
 	public static enum Vrsta {

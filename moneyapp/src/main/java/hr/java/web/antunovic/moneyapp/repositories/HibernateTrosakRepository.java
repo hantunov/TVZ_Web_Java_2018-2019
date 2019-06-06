@@ -50,5 +50,28 @@ public class HibernateTrosakRepository implements TrosakRepository {
 	public Trosak save(Trosak trosak) {
 		return em.merge(trosak);
 	}
+	
+	@Override
+	public Trosak update(Trosak trosak) {
+		try {
+			return em.merge(trosak);
+		} catch (Exception ex) {
+			log.error("Trosak nije promijenjen jer nije pronadjen u bazi!");
+			return null;
+		}
+	}
 
+	@Override	
+	public void delete(Long id) {
+		try {
+			Trosak trosak = em
+	                		.createQuery("SELECT t FROM Trosak t WHERE t.id = ?1", Trosak.class)
+	                		.setParameter(1, id)
+	                		.getSingleResult();
+			em.remove(trosak);
+		 } catch (Exception ex) {
+			 log.error("Trosak nije obrisan jer nije pronadjen u bazi!");
+		}
+	}
+	
 }
