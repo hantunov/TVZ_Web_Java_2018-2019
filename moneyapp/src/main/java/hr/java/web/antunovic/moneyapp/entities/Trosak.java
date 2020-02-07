@@ -51,8 +51,8 @@ public class Trosak implements Serializable{
 	@JsonBackReference
 	private Novcanik novcanik;
 	
-	public static enum Vrsta {
-		Hrana, Piæe, Najam, Režije, Duæan
+	public enum Vrsta {
+		HRANA, PICE, NAJAM, REZIJE, DUCAN
 	}
 	
 }

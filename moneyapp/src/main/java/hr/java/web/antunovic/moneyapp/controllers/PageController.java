@@ -3,6 +3,7 @@ package hr.java.web.antunovic.moneyapp.controllers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javax.validation.Valid;
 
@@ -15,6 +16,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -22,9 +24,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import hr.java.web.antunovic.moneyapp.entities.Korisnik;
 import hr.java.web.antunovic.moneyapp.entities.Novcanik;
 import hr.java.web.antunovic.moneyapp.entities.Trosak;
-import hr.java.web.antunovic.moneyapp.repositories.HibernateKorisnikRepository;
-import hr.java.web.antunovic.moneyapp.repositories.HibernateNovcanikRepository;
-import hr.java.web.antunovic.moneyapp.repositories.HibernateTrosakRepository;
+import hr.java.web.antunovic.moneyapp.repositories.KorisnikRepository;
+import hr.java.web.antunovic.moneyapp.repositories.NovcanikRepository;
+import hr.java.web.antunovic.moneyapp.repositories.TrosakRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,16 +34,16 @@ import lombok.extern.slf4j.Slf4j;
 @SessionAttributes({"novcanik"})
 public class PageController {
 	
-	HibernateTrosakRepository hibernateTrosakRepository;
-	HibernateNovcanikRepository hibernateNovcanikRepository;
-	HibernateKorisnikRepository hibernateKorisnikRepository;	
+	TrosakRepository trosakRepository;
+	NovcanikRepository novcanikRepository;
+	KorisnikRepository korisnikRepository;	
 	
 	@Autowired
-	public PageController(HibernateTrosakRepository hibernateTrosakRepository, HibernateNovcanikRepository hibernateNovcanikRepository,
-			HibernateKorisnikRepository hibernateKorisnikRepository) {
-		this.hibernateTrosakRepository = hibernateTrosakRepository;
-		this.hibernateNovcanikRepository = hibernateNovcanikRepository;
-		this.hibernateKorisnikRepository = hibernateKorisnikRepository;
+	public PageController(TrosakRepository trosakRepository, NovcanikRepository novcanikRepository,
+			KorisnikRepository korisnikRepository) {
+		this.trosakRepository = trosakRepository;
+		this.novcanikRepository = novcanikRepository;
+		this.korisnikRepository = korisnikRepository;
 	}
 	
 	@ModelAttribute("novcanik")
@@ -50,7 +52,7 @@ public class PageController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
 		
-		Korisnik loggedInUser = hibernateKorisnikRepository.findByUsername(currentPrincipalName);
+		Korisnik loggedInUser = korisnikRepository.findByUsername(currentPrincipalName);
 		
 		log.info("Trenutni korisnik je {}, sa ID-jem: {}", currentPrincipalName, loggedInUser.getId());
 		
@@ -58,7 +60,7 @@ public class PageController {
         novcanik.setUserID(loggedInUser.getId());
         novcanik.setDatum(LocalDateTime.now());
         novcanik.setNaziv(loggedInUser.getUsername() + "ov novèanik");
-        novcanik = hibernateNovcanikRepository.save(novcanik);
+        novcanik = novcanikRepository.save(novcanik);
 
         return novcanik;
 	}	
@@ -87,27 +89,39 @@ public class PageController {
 		
 		trosak.setNovcanik(novcanik);
 		trosak.setDatum(LocalDateTime.now());
-		trosak = hibernateTrosakRepository.save(trosak);
+		trosak = trosakRepository.save(trosak);
 		model.addAttribute("trosak", trosak);
 		
 		LocalDate date = LocalDate.now();
 		DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		String danas = date.format(pattern);
 		
-		model.addAttribute("danas", danas);
-		//log.info("Obrada troska: " + trosak);		
+		model.addAttribute("danas", danas);	
 		
-		hibernateTrosakRepository.save(trosak);
+		trosakRepository.save(trosak);
 		
 		novcanik.getListaTroskova().add(trosak);
-		//log.info("Obrada novcanika: " + novcanik);
 		
 		return "PrikazTroska";
 	}
 	
+	@GetMapping("/pretraga")
+	public String showPretraga() {
+	    return "PretragaTroska";
+	}	
+	
+	@PostMapping("/pretraga/rezultat")
+	public String showPretragaTroska(@RequestParam String naziv, Model model) {
+
+		ArrayList<Trosak> troskovi = trosakRepository.findAllByNazivLike(naziv);
+		model.addAttribute("troskovi", troskovi);		
+		
+	    return "PretragaTroska";
+	}
+	
 	@GetMapping("/reset")
 	public String resetWallet(SessionStatus status, @SessionAttribute("novcanik") Novcanik novcanik){
-		hibernateNovcanikRepository.save(novcanik);
+		novcanikRepository.save(novcanik);
 		status.setComplete();
 	return "redirect:/"; }
 }

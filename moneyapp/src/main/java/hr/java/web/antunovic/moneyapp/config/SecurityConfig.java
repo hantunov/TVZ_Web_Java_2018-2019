@@ -33,16 +33,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		http
 		.authorizeRequests()
+		.antMatchers("/unos/**")
+		.permitAll()
 		.antMatchers("/**")
 		.hasRole("USER")
-		.antMatchers("/unos/**").permitAll()
 		.and()
 		.formLogin()
 		//.loginPage("/login")
 		.defaultSuccessUrl("/unos", true)
 		.and()
 		.logout();
-		//.logoutSuccessUrl("/login");
 		
 		http
         .csrf()

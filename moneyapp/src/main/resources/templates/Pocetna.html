@@ -15,7 +15,7 @@
 	<div class="col-lg-3">
 	
 		<div class="clearfix">
-			<img src="slika.png" align=left>
+			<img src="slika.png" alt="Logo" align=left>
   			<h1>MoneySaver</h1>
   		</div>
 		
@@ -24,6 +24,10 @@
 		<form method="GET" action="/unos" >
 			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 			<button type="submit" class="btn btn-primary">Unos novog troška</button>
+		</form>
+		
+		<form action="/pretraga">
+    		<button class="btn btn-primary" type="submit">Pretraga troškova</button>	
 		</form>
 		
 		<br />

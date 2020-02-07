@@ -1,5 +1,7 @@
 package hr.java.web.antunovic.moneyapp.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.java.web.antunovic.moneyapp.entities.Trosak;
-import hr.java.web.antunovic.moneyapp.repositories.HibernateTrosakRepository;
+import hr.java.web.antunovic.moneyapp.repositories.TrosakRepository;
 
 @RestController
 @Secured("ROLE_USER")
@@ -25,21 +27,20 @@ import hr.java.web.antunovic.moneyapp.repositories.HibernateTrosakRepository;
 public class TrosakRestController {
 	
 	@Autowired
-	private final HibernateTrosakRepository trosakRepository;
+	private TrosakRepository trosakRepository;
 	
-	public TrosakRestController(HibernateTrosakRepository trosakRepository) {
+	public TrosakRestController(TrosakRepository trosakRepository) {
 		this.trosakRepository = trosakRepository;
 	}
 	
-	@GetMapping public Iterable<Trosak> findAll() {
-		
+	@GetMapping public Iterable<Trosak> findAll() {		
 		return trosakRepository.findAll();		
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Trosak> findOne(@PathVariable Long id) {
-		Trosak trosak = trosakRepository.findOne(id);
-		if(trosak != null) {
+	public ResponseEntity<Optional<Trosak>> findOne(@PathVariable Long id) {
+		Optional<Trosak> trosak = trosakRepository.findById(id);
+		if(trosak.isPresent()) {
 			return new ResponseEntity<>(trosak, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -54,13 +55,13 @@ public class TrosakRestController {
 	
 	@PutMapping("/{id}")
 	public Trosak update(@RequestBody Trosak trosak) {		
-		return trosakRepository.update(trosak);		
+		return trosakRepository.save(trosak);		
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
-		trosakRepository.delete(id);
+		trosakRepository.deleteById(id);
 	}
 	
 }

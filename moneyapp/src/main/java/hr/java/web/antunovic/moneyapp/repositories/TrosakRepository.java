@@ -1,16 +1,15 @@
 package hr.java.web.antunovic.moneyapp.repositories;
 
+import java.util.ArrayList;
+
+import org.springframework.data.repository.CrudRepository;
+
 import hr.java.web.antunovic.moneyapp.entities.Trosak;
 
-public interface TrosakRepository {
-	
-	Iterable<Trosak> findAll();
+public interface TrosakRepository extends CrudRepository<Trosak, Long>{
 
-    Trosak findOne(Long id);
-	
-	Trosak save(Trosak trosak);
-	
-	Trosak update(Trosak trosak);
-	
-	void delete(Long id);
+	ArrayList<Trosak> findAllByNaziv(String naziv);
+
+	ArrayList<Trosak> findAllByNazivLike(String naziv);
+
 }

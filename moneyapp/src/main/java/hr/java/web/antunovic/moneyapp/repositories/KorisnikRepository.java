@@ -1,15 +1,9 @@
 package hr.java.web.antunovic.moneyapp.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import hr.java.web.antunovic.moneyapp.entities.Korisnik;
 
-public interface KorisnikRepository {
-		
-	Iterable<Korisnik> findAll();
-
-	Korisnik findById(Long id);
-	
-	Korisnik findByUsername(String username);
-		
-	Korisnik save(Korisnik korisnik);
-
+public interface KorisnikRepository extends JpaRepository<Korisnik, Long>{	
+	Korisnik findByUsername(String username);	
 }

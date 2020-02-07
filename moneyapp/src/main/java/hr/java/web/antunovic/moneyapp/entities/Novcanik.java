@@ -1,5 +1,6 @@
 package hr.java.web.antunovic.moneyapp.entities;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,8 +20,10 @@ import lombok.Data;
 @Entity
 @Table(name="novcanici")
 @Data
-public class Novcanik {
+public class Novcanik implements Serializable {
 	
+	private static final long serialVersionUID = 4258156495814431380L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

@@ -1,5 +1,7 @@
 package hr.java.web.antunovic.moneyapp.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.java.web.antunovic.moneyapp.entities.Novcanik;
-import hr.java.web.antunovic.moneyapp.repositories.HibernateNovcanikRepository;
+import hr.java.web.antunovic.moneyapp.repositories.NovcanikRepository;
 
 @RestController
 @Secured("ROLE_USER")
@@ -25,9 +27,9 @@ import hr.java.web.antunovic.moneyapp.repositories.HibernateNovcanikRepository;
 public class NovcanikRestController {
 	
 	@Autowired
-	private final HibernateNovcanikRepository novcanikRepository;
+	private NovcanikRepository novcanikRepository;
 	
-	public NovcanikRestController(HibernateNovcanikRepository novcanikRepository) {
+	public NovcanikRestController(NovcanikRepository novcanikRepository) {
 		this.novcanikRepository = novcanikRepository;
 	}
 	
@@ -37,9 +39,9 @@ public class NovcanikRestController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Novcanik> findOne(@PathVariable Long id) {
-		Novcanik novcanik = novcanikRepository.findOne(id);
-		if(novcanik != null) {
+	public ResponseEntity<Optional<Novcanik>> findOne(@PathVariable Long id) {
+		Optional<Novcanik> novcanik = novcanikRepository.findById(id);
+		if(novcanik.isPresent()) {
 			return new ResponseEntity<>(novcanik, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -54,14 +56,13 @@ public class NovcanikRestController {
 	
 	@PutMapping("/{id}")
 	public Novcanik update(@RequestBody Novcanik novcanik) {		
-		// za implementirati
-		return novcanik;		
+		return novcanikRepository.save(novcanik);	
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
-		novcanikRepository.delete(id);
+		novcanikRepository.deleteById(id);
 	}
 	
 }

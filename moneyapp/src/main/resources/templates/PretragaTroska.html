@@ -15,7 +15,7 @@
 	<div class="col-lg-3">
 	
 		<div class="clearfix">
-			<img src="slika.png" align=left>
+			<img src="slika.png" alt="Logo" align=left>
   			<h1>MoneySaver</h1>
   		</div>
 		
@@ -25,6 +25,33 @@
 			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 			<button type="submit" class="btn btn-primary">Unos novog troška</button>
 		</form>
+		
+		<br />
+			
+		<form method="POST" th:object="${trosak}" th:action="@{/pretraga/rezultat}">
+		
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+		
+			<input class="form-control" type="text" id="naziv" name="naziv" placeholder="Unesite naziv troška" autofocus="autofocus" />
+			
+			<button type="submit" class="btn btn-primary">Pretraži</button>
+			
+		</form>		
+		
+		<br />
+		
+		<table class="table table-striped">
+			<tr>
+				<th>Naziv</th>
+				<th>Vrsta</th>
+				<th>Iznos</th>
+			</tr>
+			<tr th:each="trosak : ${troskovi}">
+				<td th:text="${trosak.naziv}"></td>
+				<td th:text="${trosak.vrsta}"></td>
+				<td th:text="${trosak.iznos}"></td>
+			</tr>
+		</table>		
 		
 		<br />
 		

@@ -1,17 +1,8 @@
 package hr.java.web.antunovic.moneyapp.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import hr.java.web.antunovic.moneyapp.entities.Novcanik;
 
-public interface NovcanikRepository {
-	
-	public Iterable<Novcanik> findAll();
-	
-	public Novcanik findOne(Long id);
-	
-	Novcanik save(Novcanik novcanik);
-	
-	Novcanik update(Novcanik novcanik);
-	
-	void delete(Long id);
-	
-}
+public interface NovcanikRepository extends JpaRepository<Novcanik, Long>{}
+
